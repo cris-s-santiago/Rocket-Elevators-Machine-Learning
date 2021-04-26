@@ -1,0 +1,13 @@
+<section class="dark">
+
+<p id="notice"><%= notice %></p>
+
+<p style="margin: auto; padding: 10px; font-size: 48px, text-align: center">
+  <strong>Name:</strong>
+  <%= @quote.name %><br/>
+  <strong>Total Price:</strong>
+  <%= @quote.total_price %><br/>
+</p>
+<%= link_to 'Edit', edit_quote_path(@quote) %> |
+<%= link_to 'Back', quotes_path %>
+</section>

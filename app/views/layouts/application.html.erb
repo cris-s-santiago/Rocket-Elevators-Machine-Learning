@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<meta charset="utf-8" />
+	<title>Rocket Elevators</title>
+	<meta name="description" content="Rocket Elevators" />
+	<meta name="Author" content="Team 4" />
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+
+    <%= stylesheet_link_tag    'application', media: 'all'%>
+    <%= javascript_include_tag 'application'%>
+
+	
+
+	<!-- PAGE LEVEL SCRIPTS -->
+    <%= stylesheet_link_tag    'header-1', media: 'all'%>
+	<%= stylesheet_link_tag    'color_scheme/lightgrey', media: 'all'%>
+
+	<!-- THEME CSS -->
+    <%= stylesheet_link_tag    'essentials', media: 'all'%>
+    <%= stylesheet_link_tag    'layout', media: 'all'%>
+    <%= stylesheet_link_tag    'layout-dark', media: 'all'%>
+    <%= stylesheet_link_tag    'custom-forms-v2', media: 'all'%>
+
+	<!-- CORE CSS -->
+	<%= stylesheet_link_tag    'plugins/bootstrap/css/bootstrap.min', media: 'all'%>
+
+	<!-- REVOLUTION SLIDER -->
+	<%= stylesheet_link_tag    'plugins/slider.revolution/css/extralayers', media: 'all'%>
+	<%= stylesheet_link_tag    'plugins/slider.revolution/css/settings', media: 'all'%>
+
+	<!-- mobile settings -->
+	<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+
+	<!-- WEB FONTS : use %7C instead of | (pipe) -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600%7CRaleway:300,400,500,600,700%7CLato:300,400,400italic,600,700" rel="stylesheet" type="text/css" />
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+	<!-- Default theme -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+	<!-- Semantic UI theme -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+	<!-- Bootstrap theme -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+
+	<!-- JavaScript -->
+	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+	<!--Favicon need to make it prettier-->
+	<link href="data:image/x-icon;base64,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
+	AElFTkSuQmCC" rel="icon" type="image/x-icon" />
+  </head>
+
+
+	<script>var plugin_path = 'assets/plugins/';</script>
+  <body class="enable-animation">
+    <!-- wrapper -->
+	<div id="wrapper">
+      <%= render "main/header"%>
+        <%= yield %>
+      <%= render "main/footer"%>
+    </div>
+	<!-- /wrapper -->
+
+  </body>
+</html>

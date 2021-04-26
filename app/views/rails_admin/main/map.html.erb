@@ -1,0 +1,286 @@
+<head>
+<script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
+
+  <style type="text/css">
+
+  #map-container {
+        padding: 6px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #ccc #ccc #999 #ccc;
+        -webkit-box-shadow: rgba(64, 64, 64, 0.5) 0 2px 5px;
+        -moz-box-shadow: rgba(64, 64, 64, 0.5) 0 2px 5px;
+        box-shadow: rgba(64, 64, 64, 0.1) 0 2px 5px;
+        width: 800px;
+  }
+
+  #map {
+    height: 650px;
+    width: 100%;
+  }
+
+  #actions {
+        list-style: none;
+        padding: 0;
+      }
+
+      #inline-actions {
+        padding-top: 10px;
+      }
+
+      .item {
+        margin-left: 20px;
+      }
+
+      .custom-clustericon {
+        background: var(--cluster-color);
+        color: #fff;
+        border-radius: 100%;
+        font-weight: bold;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+      }
+
+      .custom-clustericon::before,
+      .custom-clustericon::after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        background: var(--cluster-color);
+        opacity: 0.2;
+        border-radius: 100%;
+      }
+
+      .custom-clustericon::before {
+        padding: 7px;
+      }
+
+      .custom-clustericon::after {
+        padding: 14px;
+      }
+
+      .custom-clustericon-1 {
+        --cluster-color: #00a2d3;
+      }
+
+      .custom-clustericon-2 {
+        --cluster-color: #ff9b00;
+      }
+
+      .custom-clustericon-3 {
+        --cluster-color: #ff6969;
+      }
+
+
+  .gm-style .gm-style-iw {
+    font-weight: 400;
+    font-size: 16px;
+    overflow: hidden;
+  }
+
+  p {
+    color: #000;
+    font-family: Roboto;
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+
+  </style>
+
+</head>
+<body>
+
+
+ <script>
+
+
+    var buildings = <%= Building.all.to_json.html_safe %>;
+    var buildingInfos = <%= BuildingDetail.all.to_json.html_safe %>;
+    var addresses = <%= Address.all.to_json.html_safe %>;
+    var batteries = <%= Battery.all.to_json.html_safe %>;
+    var columns = <%= Column.all.to_json.html_safe %>;
+    var elevators = <%= Elevator.all.to_json.html_safe %>;
+    var customers = <%= Customer.all.to_json.html_safe %>;
+    var marker;
+    var markers = [];
+    var selectedMarker;
+
+  function initMap() {
+
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 39.959, lng: -101 },
+        zoom: 4,
+        mapId: "feb9c8c37860f93d",
+      });
+
+      var styles = [
+        [
+          MarkerClusterer.withDefaultStyle({
+            width: 35,
+            height: 35,
+            url: "../images/people35.png",
+            textColor: "#ff00ff",
+            textSize: 10,
+          }),
+          MarkerClusterer.withDefaultStyle({
+            width: 45,
+            height: 45,
+            url: "../images/people45.png",
+            textColor: "#ff0000",
+            textSize: 11,
+          }),
+          MarkerClusterer.withDefaultStyle({
+            width: 55,
+            height: 55,
+            url: "../images/people55.png",
+            textColor: "#ffffff",
+            textSize: 12,
+          }),
+        ],
+        [
+          MarkerClusterer.withDefaultStyle({
+            url: "../images/conv30.png",
+            width: 30,
+            height: 27,
+            anchorText: [-3, 0],
+            anchorIcon: [27, 28],
+            textColor: "#ff00ff",
+            textSize: 10,
+          }),
+          MarkerClusterer.withDefaultStyle({
+            url: "../images/conv40.png",
+            width: 40,
+            height: 36,
+            anchorText: [-4, 0],
+            anchorIcon: [36, 37],
+            textColor: "#ff0000",
+            textSize: 11,
+          }),
+          MarkerClusterer.withDefaultStyle({
+            url: "../images/conv50.png",
+            width: 50,
+            height: 45,
+            anchorText: [-5, 0],
+            anchorIcon: [45, 46],
+            textColor: "#0000ff",
+            textSize: 12,
+          }),
+        ],
+        [
+          MarkerClusterer.withDefaultStyle({
+            url: "../images/heart30.png",
+            width: 30,
+            height: 26,
+            anchorIcon: [26, 15],
+            textColor: "#ff00ff",
+            textSize: 10,
+          }),
+          MarkerClusterer.withDefaultStyle({
+            url: "../images/heart40.png",
+            width: 40,
+            height: 35,
+            anchorIcon: [35, 20],
+            textColor: "#ff0000",
+            textSize: 11,
+          }),
+          MarkerClusterer.withDefaultStyle({
+            url: "../images/heart50.png",
+            width: 50,
+            height: 44,
+            anchorIcon: [44, 25],
+            textSize: 12,
+          }),
+        ],
+        [
+          {
+            width: 30,
+            height: 30,
+            className: "custom-clustericon-1",
+          },
+          {
+            width: 40,
+            height: 40,
+            className: "custom-clustericon-2",
+          },
+          {
+            width: 50,
+            height: 50,
+            className: "custom-clustericon-3",
+          },
+        ],
+      ];
+
+
+      buildings.forEach(obj => { // For each building in the building array
+
+        let batteryAmount = batteries.filter(b => b.building_id === obj.id);
+        let columnAmounts = columns.filter(c => c.battery_id === obj.id);
+        let elevatorAmounts = elevators.filter(e => e.column_id === obj.id);
+        let details = buildingInfos.find(d => d.id === obj.id);
+        let customer = customers.find(c => c.id === obj.customer_id);
+        let address = addresses.find(o => o.id === obj.address_id); // Find the address using the id
+
+        var longitude = parseFloat(obj.longitude);
+        var latitude = parseFloat(obj.latitude);
+        var building_address = obj.building_address;
+        var tech_full_name = obj.building_technical_full_name;
+
+        var marker = new google.maps.Marker({
+          position: {lat: latitude, lng: longitude},
+          map,
+        });
+
+        var contentInfo =
+                    ("<p><b>Client Name: </b>" + customer.company_contact_full_name + "<br>" +
+                     "<p><b>Company Name: </b>" + customer.company_name + "<br>" +
+                     "<p><b>Building address: </b>" + address.number_and_street + "<br>" +
+                     "<p><b>Amount of Floors: </b>" + details.information_value + "<br>" +
+                     "<p><b>Amount of Batteries: </b>" + batteryAmount.length + "<br>" +
+                     "<p><b>Amount of Columns: </b>" + columnAmounts.length + "<br>" +
+                     "<p><b>Amount of Elevators: </b>" + elevatorAmounts.length + "<br>" +
+                     "<p><b>Full name of technical contact: </b>" + tech_full_name + "<br>");
+
+        marker.infowindow = new google.maps.InfoWindow({
+          content: contentInfo,
+        });
+
+        marker.addListener("click", () => {
+          if(selectedMarker == null){
+            selectedMarker = marker;
+            selectedMarker.infowindow.open(map, selectedMarker)
+          }
+          else{
+            selectedMarker.infowindow.close();
+            selectedMarker = marker;
+            selectedMarker.infowindow.open(map, selectedMarker);
+          }
+        });
+        google.maps.event.addListener(map, 'click', function(){
+            marker.infowindow.close();
+        });
+
+        markers.push(marker);
+      });
+
+       markerCluster = new MarkerClusterer(map, markers, {
+          imagePath: "https://github.com/googlemaps/js-markerclustererplus/blob/main/images/m1.png?raw=true",
+        });
+  }
+
+
+  </script>
+    <!--The div element for the map -->
+  <div id="map"></div>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=<%=ENV['GOOGLE_API']%>&callback=initMap&libraries=&v=weekly&map_ids=feb9c8c37860f93d"
+    async
+  ></script>
+</body>

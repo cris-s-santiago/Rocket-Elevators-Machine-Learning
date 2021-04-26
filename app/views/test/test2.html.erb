@@ -1,0 +1,19 @@
+<section class="dark">
+
+
+    <%= form_for :content do |f| %>
+        <%= f.label :city %>:
+        <%= f.text_field :city %><br />
+
+        <%= f.submit %>
+    <% end %>
+
+ <%= form_tag :form_path, method: :post, remote: true, class: 'contact-form', id: 'contact-form' do %>
+        <%= text_field_tag 'city' %><br />
+
+        <%= submit_tag "Save edits" %>
+ <% end %>
+ <div id="handraisers__response-title"></div>
+ <div id="handraisers__response-text"></div>
+
+</section>

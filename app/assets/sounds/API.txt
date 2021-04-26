@@ -1,0 +1,11 @@
+Post: https://westus.api.cognitive.microsoft.com/speaker/identification/v2.0/text-independent/profiles/identifySingleSpeaker?profileIds=e0762f50-c521-4c65-a901-12e4e4b3c2f2,a52253bd-9734-4dcc-bf4c-07d97ceb8015,2f202d1a-0772-4f4f-94ce-11ec2d936f4a,a7f1e383-e3e3-4c2e-aec2-97cf9a5a869a
+
+Key for the identifySpeaker Method: 3d7458d4dcb44b6ebdbc20af017f777a
+Key for the speechConverter Method : 51d28a570828496f9d7e1ead5867b92f
+
+ID:
+
+Felix: e0762f50-c521-4c65-a901-12e4e4b3c2f2
+Claude: a52253bd-9734-4dcc-bf4c-07d97ceb8015
+Chistiane: 2f202d1a-0772-4f4f-94ce-11ec2d936f4a
+Abdul: a7f1e383-e3e3-4c2e-aec2-97cf9a5a869a

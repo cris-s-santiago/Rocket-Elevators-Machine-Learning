@@ -1,0 +1,51 @@
+
+<section class="dark">
+<p id="notice"><%= notice %></p>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <body>
+    <h1 class="fw-800 fs-40 font-roboto" style="text-align: center">Interventions</h1>
+    <%= form_for Intervention.new do |f| %>
+        <div class="row wow slideInUp" data-wow-duration="1s">
+            <div class="col-md-3 col-md-offset-1">
+                <%= f.label :employee_id, 'Select an Employee', id: 'employee_label'%> <br/>
+                <%= f.select :employee_id, 
+                    options_from_collection_for_select(Employee.all, "id", "first_name", "last_name"), {prompt: 'Select an Employee'}, required: true, class: "form-control"%><br/>
+              
+                <%= f.label :report, 'Enter a description', id: 'report_label'%>
+                <%= f.text_area :report, class:"form-control", required: true%><br/>
+                
+                <%= f.submit 'Submit', data: { confirm: "Are you sure?" }, class: 'btn btn-outline-secondary form-control'%>
+            </div>
+            <%# col-md-offset-3 %>
+            <div class="col-md-4">
+                <%= f.label :customer_id, 'Select a Customer', id: 'customer_label'%>
+                <%= f.select :customer_id, 
+                    options_for_select(@customers.collect{ |u| [u.company_contact_full_name, u.id] }), {prompt: 'Select a Customer'}, required: true, class: 'form-control'%>
+                
+                <%= f.label :building_id, 'Select a Building', id: 'building_label'%>
+                <%= f.select :building_id, 
+                    options_from_collection_for_select(Building.all, "id", "building_address"), required: true, class: 'form-control'%>
+                
+                <%= f.label :battery_id, 'Select a Battery', id: 'battery_label'%>
+                <%= f.select :battery_id, 
+                    options_from_collection_for_select(Battery.all, "id", "id"),{}, required: true, class: 'form-control'%>
+                
+                <%= f.label :column_id, 'Select a Column', id: 'column_label'%>
+                <%= f.select :column_id, 
+                    options_from_collection_for_select(Column.all, "id", "id"),{},
+                    class: 'form-control'%>
+                
+                <%= f.label :elevator_id, 'Select an Elevator', id: 'elevator_label'%>
+                <%= f.select :elevator_id,
+                    options_from_collection_for_select(Elevator.all, "id", "id"),{},
+                    class: 'form-control'%>
+            </div>
+        </div>
+        <br/><br/><br/><br/><br/><br/><br>
+    <%end%>
+    
+  </body>
+
+</section>

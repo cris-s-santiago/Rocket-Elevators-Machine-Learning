@@ -1,0 +1,25 @@
+<section class="dark">
+
+<h1 class="fw-800 fs-40 font-roboto" style="text-align: center">Machine Learning</h1>
+<br /><br /><br />
+
+<div class="row wow slideInUp" data-wow-duration="1s">
+        <div class="col-md-4 col-md-offset-4">
+            <%= select_tag( "zwavhe", options_for_select(@fileList),options = {:class => 'form-control', :prompt => "Please select"}) %>
+        
+            <button type="button" id="apiTest" class="btn btn-outline-secondary">TEST API CALL</button>
+        </div>
+</div>
+
+<br /><br /><br />
+
+<div class="row wow slideInUp" data-wow-duration="1s">
+    <div class="col-md-4 col-md-offset-4">
+        <div id="leZwavhePlayerContainer"></div>
+    </div>
+</div>
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+</section>

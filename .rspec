@@ -1,0 +1,4 @@
+--require rails_helper
+--format html
+--out rspec_results.html
+--format documentation

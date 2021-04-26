@@ -1,0 +1,94 @@
+<div id="header" class="navbar-toggleable-md sticky header-md dark clearfix">
+    <!-- TOP NAV -->
+    <header id="topNav">
+        <div class="container">
+            <!-- Mobile Menu Button -->
+            <button class="btn btn-mobile" class="submenu-dark" data-toggle="collapse" data-target=".nav-main-collapse">
+                <i class="fa fa-bars"></i>
+            </button>
+            <!-- Logo -->
+            <a class="logo float-left scrollTo" href="/">
+                <%= image_tag("R2.png", alt:"RocketElevatorsLogo")%>
+            </a>
+            <div class="navbar-collapse collapse float-right nav-main-collapse submenu-dark">
+                <nav class="nav-main">
+                    <ul id="topMain" class="nav nav-pills nav-main nav-onepage">
+                        <li><!-- HOME -->
+                            <a href="/">
+                                HOME
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" href="/#services-nav">
+                                SERVICES
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/residential.html">RESIDENTIAL</a></li>
+                                <li><a href="/commercial.html">COMMERCIAL</a></li>
+                                <li><a href="/quotes/new">REQUEST QUOTE</a></li>
+                            </ul>
+                        </li>
+                        <li><!-- portfolio -->
+                            <a href="/#portfolio-nav">
+                                PORTFOLIO
+                            </a>
+                        </li>
+                        <li><!-- news -->
+                            <a href="/#news-nav">
+                                NEWS
+                            </a>
+                        </li>
+                        <li><!-- clients -->
+                            <a href="/#clients-nav">
+                                CLIENTS
+                            </a>
+                        </li>
+                        <li><!-- CONTACT -->
+                            <a href="/#contact-nav">
+                                CONTACT
+                            </a>
+                        </li>
+                        <li><!-- Elevator Media -->
+                            <a href="/elevator_media">
+                                MEDIA
+                            </a>
+                        </li>
+                        <!-- ADMIN -->
+                        <% if user_signed_in? %>
+                        <li class="dropdown">
+                            <a class="dropdown">
+                                <%= current_user.name %>
+                                <ul class="dropdown-menu">
+                                    <li><%= link_to ">Quotes", quotes_path %></li>                                   
+                                    <% if can? :manage, :all %>
+                                        <li><a href="/interventions">>Interventions</a></li>
+                                        <li><a href="/speaker">>Speaker Id</a></li>
+                                        <li><a href="/speechToText">>Speech To Text</a></li>
+                                        <li><a href="/admin">>Back Office</a></li>
+                                    <% end %>
+                                    <li><%= link_to ">Edit Profile", edit_user_registration_path %></li>
+                                    <li><%= link_to ">SIGN OUT", destroy_user_session_path, method: :delete %></li>                   
+                                </ul>
+                            </a>
+                        </li>
+                        <% else %>
+                        <li> <!-- Log in -->
+                            <%= link_to "LOG IN", new_user_session_path %>
+                            <% end %>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!-- /END TOP NAV -->
+    <% unless flash.empty? %>
+    <script type="text/javascript">
+        <% flash.each do |f| %>
+        <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
+            toastr.options.positionClass = 'toast-top-left';
+            toastr['<%= type %>']('<%= f[1] %>');
+    <% end %>
+    </script>
+    <% end %>
+</div>

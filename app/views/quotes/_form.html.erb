@@ -1,0 +1,160 @@
+<div id="wrapper">
+
+  <section class="page-header dark">
+    <div class="container text-center">
+      <h1 class="fw-800 fs-60 font-latoo">Request A Quote</h1>
+    </div>
+  </section>
+  <!-- /PAGE HEADER -->
+
+
+
+  <section class="dark">
+
+  <%= simple_form_for(@quote) do |f| %>
+    <%= f.error_notification %>
+    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+    <div class="container">
+    <div class="form-container">
+      <div class="grid1">
+                <%= f.input :name%><br/>
+                <% if !user_signed_in? %>
+                  <%= f.input :email%><br/>
+                <% end %>
+                <%= f.input :company_name, :label=>"Enter Your Company Name (optional)" %> <br/>
+                <%= f.select :building_type, Quote::TYPE_LIST, :label=>"Select Your Building Type"%><br/>
+        </div>
+
+
+
+      <div class="grid2">
+            <div class="">
+                <div id="lineSelection" class="">
+                  <%= f.input :product_line, :label=>"Select Your Product Line", as: :radio_buttons, collection: Quote::PRODUCT, wrapper: :vertical_collection_inline %>
+      </div>
+                  <script>//On product line click calc price
+                    $('#lineSelection input[type=radio]').change(function () {
+                      price($('#lineSelection input[type=radio]:checked').val());
+                    });
+                  </script>
+      </div>
+          <!--Questions-->
+          <div id="questionInput">
+                <div id="number_of_apartments" class="hidden">
+                  <%= f.input :number_of_apartments, min: 0, class:"form-control" %>
+              </div>
+
+              <div id="number_of_floors" class="hidden">
+
+                  <%= f.input :number_of_floors, min: 0, class:"form-control" %>
+
+              </div>
+
+              <div id="number_of_basements" class="hidden">
+
+                  <%= f.input :number_of_basements, min: 0, class:"form-control" %>
+
+              </div>
+
+              <div id="number_of_companies" class="hidden">
+
+                  <%= f.input :number_of_companies, min: 0, class:"form-control" %>
+
+              </div>
+
+              <div id="number_of_parking_spots" class="hidden">
+
+                  <%= f.input :number_of_parking_spots, min: 0, class:"form-control" %>
+
+              </div>
+
+              <div id="number_of_elevators" class="hidden">
+
+                  <%= f.input :number_of_elevators, min: 0, class:"form-control" %>
+
+              </div>
+
+              <div id="number_of_corporations" class="hidden">
+
+                  <%= f.input :number_of_corporations, min: 0, class:"form-control" %>
+
+              </div>
+
+              <div id="maximum_occupancy" class="hidden">
+
+                  <%= f.input :maximum_occupancy, min: 0, class:"form-control" %>
+
+              </div>
+
+              <div id="business_hours" class="hidden">
+
+                  <%= f.input :business_hours, in: 1.0..24.0, class:"form-control" %>
+
+              </div>
+                </div>
+
+        </div>
+
+        <div>
+
+
+    <form> <!--Estimated Elevators Form-->
+      <div id="elevator-amount" class="fancy-form ">
+        <label for="estimatedElevators" class="text-center">Number Of Elevators&nbsp;</label>
+        <input readonly id="estimatedElevators" class="form-control" value="">
+      </div>
+    </form>
+
+
+
+
+<!--Price Estimate Forms-->
+          <div class="">
+            <div id="elevator-unit-price" class="fancy-form ">
+                        <%= f.input :elevator_unit_price, class:"form-control", :readonly=>true %><br/>
+            </div>
+
+            <div id="elevator-total-price" class="fancy-form ">
+                      <%= f.input :elevator_total_price, class:"form-control", :readonly=>true %><br/>
+            </div>
+
+            <div id="installation-fees" class="fancy-form ">
+                      <%= f.input :installation_price, class:"form-control", :readonly=>true %><br/>
+            </div>
+
+            <div id="final-price" class="fancy-form ">
+                      <%= f.input :total_price, class:"form-control", :readonly=>true %><br/>
+            </div>
+            </div>
+
+        </div>
+      <div class="grid4">
+      </div>
+
+      <div class="text-center grid5">
+        <% if user_signed_in? %>
+          <div class="">
+                <%= f.button :submit %>
+          </div>
+          Signed in as <%= current_user.email %>.
+        <%= link_to "Edit profile", edit_user_registration_path %><br/> Not you?
+                    <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+              <% else %>
+                      <div>
+                        <%= f.button :submit %>
+                      </div>
+                      <%= link_to "Sign up", new_user_registration_path %> or
+                      <%= link_to "sign in", new_user_session_path %>
+              <% end %>
+          <% end %>
+             <div>
+                <% flash.each do |name, msg| %>
+                <%= content_tag :div, msg, id: "flash_#{name}" %>
+              </div>
+            </div>
+         </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</section>

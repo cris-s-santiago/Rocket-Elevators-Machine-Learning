@@ -1,0 +1,48 @@
+DROP TABLE IF EXISTS fact_contact;
+DROP TABLE IF EXISTS fact_elevator;
+DROP TABLE IF EXISTS dim_customers;
+DROP TABLE IF EXISTS fact_quotes;
+DROP TABLE IF EXISTS fact_interventions;
+
+CREATE TABLE fact_contact (
+    contact_id serial PRIMARY KEY,
+    creation_date TIMESTAMP NOT NULL,
+    company_name VARCHAR (50) ,
+    email VARCHAR (255) NOT NULL,
+    project_name VARCHAR (50)
+    );
+CREATE TABLE fact_elevator (
+    serial_number serial PRIMARY KEY,
+    date_of_commissioning timestamp,
+    building_id serial,
+    customer_id serial,
+    building_city VARCHAR(50)
+    );
+CREATE TABLE dim_customers (
+    company_name VARCHAR (255) PRIMARY KEY,
+    creation_date timestamp NOT NULL,
+    full_name_company_main_contact VARCHAR(50) NOT NULL,
+    email_of_company_main_contact VARCHAR(255) NOT NULL,
+    nb_elevators smallint,
+    customers_city VARCHAR(100) DEFAULT ' '
+    );
+CREATE TABLE fact_quotes (
+    quote_id serial PRIMARY KEY,
+    creation_date TIMESTAMP NOT NULL,
+    company_name VARCHAR (50) DEFAULT ' ',
+    email VARCHAR ( 255 ) NOT NULL,
+    nb_elevator INTEGER
+    );
+CREATE TABLE fact_interventions (
+    intervention_id serial PRIMARY KEY,
+    employee_id integer NOT NULL,
+    building_id integer NOT NULL,
+    battery_id integer DEFAULT 0,
+    column_id integer DEFAULT 0,
+    elevator_id integer DEFAULT 0,
+    intervention_start TIMESTAMP NOT NULL,
+    intervention_end TIMESTAMP,
+    intervention_status VARCHAR (15) NOT NULL,
+    intervention_result VARCHAR (15) NOT NULL,
+    intervention_report VARCHAR (255) DEFAULT ' '
+    );

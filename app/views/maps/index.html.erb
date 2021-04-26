@@ -1,0 +1,116 @@
+<head>
+  <style type="text/css">
+
+  #map {
+    height: 800px;
+    width: 100%;
+  }
+
+  body {
+      margin: 0;
+      font-family: Roboto;
+      font-size: 1rem;
+      font-weight: 400;
+      color: #000000;
+      text-align: left;
+      background-color: #fff;
+  }
+
+  .gm-style .gm-style-iw {
+    font-weight: 400;
+    font-size: 16px;
+    overflow: hidden;
+  }
+
+  p {
+    color: #000;
+    font-family: Roboto;
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+
+  </style>
+
+</head>
+<body>
+
+ <script>
+
+    var buildings = <%= @buildings.html_safe %>;
+    var buildingInfos = <%= @buildingInfos.html_safe %>;
+    var addresses = <%= @addresses.html_safe %>;
+    var batteries = <%= @batteries.html_safe %>;
+    var columns = <%= @columns.html_safe %>;
+    var elevators = <%= @elevators.html_safe %>;
+    var customers = <%= @customers.html_safe %>;
+    var marker;
+    var selectedMarker;
+
+  function initMap() {
+
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 39.959, lng: -101 },
+        zoom: 4,
+        mapId: "feb9c8c37860f93d",
+      });
+
+      buildings.forEach(obj => { // For each building in the building array
+
+        let batteryAmount = batteries.filter(b => b.building_id === obj.id);
+        let columnAmounts = columns.filter(c => c.battery_id === obj.id);
+        let elevatorAmounts = elevators.filter(e => e.column_id === obj.id);
+        let details = buildingInfos.find(d => d.id === obj.id);
+        let customer = customers.find(c => c.id === obj.customer_id);
+        let address = addresses.find(o => o.id === obj.address_id); // Find the address using the id
+
+        var longitude = parseFloat(obj.longitude);
+        var latitude = parseFloat(obj.latitude);
+        var building_address = obj.building_address;
+        var tech_full_name = obj.building_technical_full_name;
+
+        var marker = new google.maps.Marker({
+          position: {lat: latitude, lng: longitude},
+          map,
+        });
+
+        var contentInfo =
+                    ("<p><b>Client Name: </b>" + customer.company_contact_full_name + "<br>" +
+                     "<p><b>Company Name: </b>" + customer.company_name + "<br>" +
+                     "<p><b>Building address: </b>" + address.number_and_street + "<br>" +
+                     "<p><b>Amount of Floors: </b>" + details.information_value + "<br>" +
+                     "<p><b>Amount of Batteries: </b>" + batteryAmount.length + "<br>" +
+                     "<p><b>Amount of Columns: </b>" + columnAmounts.length + "<br>" +
+                     "<p><b>Amount of Elevators: </b>" + elevatorAmounts.length + "<br>" +
+                     "<p><b>Full name of technical contact: </b>" + tech_full_name + "<br>");
+
+        marker.infowindow = new google.maps.InfoWindow({
+          content: contentInfo,
+        });
+
+        marker.addListener("click", () => {
+          if(selectedMarker == null){
+            selectedMarker = marker;
+            selectedMarker.infowindow.open(map, selectedMarker)
+          }
+          else{
+            selectedMarker.infowindow.close();
+            selectedMarker = marker;
+            selectedMarker.infowindow.open(map, selectedMarker);
+          }
+        });
+        google.maps.event.addListener(map, 'click', function(){
+            marker.infowindow.close();
+        });
+      })
+  }
+
+
+  </script>
+    <!--The div element for the map -->
+  <div id="map"></div>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=<%=ENV['GOOGLE_API']%>&callback=initMap&libraries=&v=weekly&map_ids=feb9c8c37860f93d"
+    async
+  ></script>
+</body>

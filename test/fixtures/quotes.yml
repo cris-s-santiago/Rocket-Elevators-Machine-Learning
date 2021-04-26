@@ -1,0 +1,39 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  type: 
+  apartments: 1
+  floors: 1
+  basements: 1
+  companies: 1
+  parkings: 1
+  elevators: 1
+  corporation: 1
+  occupants: 1
+  product_line: MyString
+  elevator_unit_price: 1.5
+  elevator_total_cost: 1.5
+  installation_cost: 1.5
+  total_cost: 1.5
+  company_name: MyString
+  hours: 2021-02-16 14:18:43
+
+two:
+  name: MyString
+  type: 
+  apartments: 1
+  floors: 1
+  basements: 1
+  companies: 1
+  parkings: 1
+  elevators: 1
+  corporation: 1
+  occupants: 1
+  product_line: MyString
+  elevator_unit_price: 1.5
+  elevator_total_cost: 1.5
+  installation_cost: 1.5
+  total_cost: 1.5
+  company_name: MyString
+  hours: 2021-02-16 14:18:43

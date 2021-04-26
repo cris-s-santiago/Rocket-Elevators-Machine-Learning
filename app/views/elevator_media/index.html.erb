@@ -1,0 +1,53 @@
+
+<section class="dark">
+<%= render partial: "streamer" %>
+
+    <div class="row wow slideInUp" data-wow-duration="1s">
+        <div class="col-md-4 col-md-offset-4">
+            <select id="initial_select" class="form-select form-control">
+                <option selected>Open this select menu</option> 
+                <option value="1">Get The Weather</option> 
+                <option value="4">Get An Advice</option>           
+                <option value="3">Get A Random Cat Gif</option>
+                <option value="" disabled>-- Jokes --</option>        
+                <option value="6">Get A Dark Joke</option>      
+                <option value="2">Get A Chuck Norris Joke</option>
+                <option value="5">Get A Programming Joke</option>  
+            </select>
+        </div>
+    </div>
+
+    <div class="row wow slideInUp" data-wow-duration="1s">
+        <div class="col-md-4 col-md-offset-4">
+            <div id="joke">
+                <button id="joke_btn" type="button" class="btn btn-outline-secondary form-control">Get a Chuck Norris joke!</button>
+            </div>
+            <div id="gif">
+                <button id="gif_btn" type="button" class="btn btn-outline-secondary form-control">Get a cat gif!</button>
+            </div>
+            <div id="advice">
+                <button id="advice_btn" type="button" class="btn btn-outline-secondary form-control">Get an advice!</button>
+            </div>
+            <div id="prog_joke">
+                <button id="prog_joke_btn" type="button" class="btn btn-outline-secondary form-control">Get a programming joke!</button>
+            </div>
+            <div id="dark_joke">
+                <button id="dark_joke_btn" type="button" class="btn btn-outline-secondary form-control">Get a dark joke!</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row wow slideInUp" data-wow-duration="1s">
+        <div class="col-md-4 col-md-offset-4">
+            <div id="weather_form">
+                <%= form_for :getWeather, :html=>{:id=>"getCity",:multipart => true,:remote=>true} do |f| %>
+                    <%= f.label :city, 'Enter a city', id: 'city_label' %>
+                    <%= f.text_field :city, class:"form-control", required: true %><br/>
+                    <%= f.submit 'Submit', id: 'city_btn', class: 'btn btn-outline-secondary form-control'%>
+                <%end%>
+            </div>
+        </div>
+    </div>
+
+<br/><br/><br/><br/><br/>
+</section>
